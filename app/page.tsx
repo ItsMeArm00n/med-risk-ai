@@ -394,7 +394,7 @@ export default function HomePage() {
                     href="#"
                     className="hover:text-foreground transition-colors duration-200 hover:translate-x-1 inline-block"
                   >
-                    <Placeholder>
+                    {"<Placeholder>"}
                   </Link>
                 </li>
                 <li>
@@ -402,21 +402,21 @@ export default function HomePage() {
                     href="#"
                     className="hover:text-foreground transition-colors duration-200 hover:translate-x-1 inline-block"
                   >
-                    <Placeholder>
+                    {"<Placeholder>"}
                   </Link>
                 </li>
               </ul>
             </div>
 
             <div>
-              <h3 className="font-semibold mb-4"><Placeholder></h3>
+              <h3 className="font-semibold mb-4">{"<Placeholder>"}</h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
                   <Link
                     href="#"
                     className="hover:text-foreground transition-colors duration-200 hover:translate-x-1 inline-block"
                   >
-                    <Placeholder>
+                    {"<Placeholder>"}
                   </Link>
                 </li>
                 <li>
@@ -424,7 +424,7 @@ export default function HomePage() {
                     href="#"
                     className="hover:text-foreground transition-colors duration-200 hover:translate-x-1 inline-block"
                   >
-                    <Placeholder>
+                    {"<Placeholder>"}
                   </Link>
                 </li>
                 <li>
@@ -432,7 +432,7 @@ export default function HomePage() {
                     href="#"
                     className="hover:text-foreground transition-colors duration-200 hover:translate-x-1 inline-block"
                   >
-                    <Placeholder>
+                    {"<Placeholder>"}
                   </Link>
                 </li>
               </ul>
@@ -446,7 +446,7 @@ export default function HomePage() {
                     href="#"
                     className="hover:text-foreground transition-colors duration-200 hover:translate-x-1 inline-block"
                   >
-                    <Placeholder>
+                    {"<Placeholder>"}
                   </Link>
                 </li>
                 <li>
@@ -454,7 +454,7 @@ export default function HomePage() {
                     href="#"
                     className="hover:text-foreground transition-colors duration-200 hover:translate-x-1 inline-block"
                   >
-                    <Placeholder>
+                    {"<Placeholder>"}
                   </Link>
                 </li>
                 <li>
@@ -462,7 +462,7 @@ export default function HomePage() {
                     href="#"
                     className="hover:text-foreground transition-colors duration-200 hover:translate-x-1 inline-block"
                   >
-                    <Placeholder>
+                    {"<Placeholder>"}
                   </Link>
                 </li>
               </ul>
