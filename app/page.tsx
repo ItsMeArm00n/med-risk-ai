@@ -10,7 +10,6 @@ import {
   Shield,
   ShieldCheck,
   Code,
-  Stethoscope,
   Zap,
   Users,
   TrendingUp,
