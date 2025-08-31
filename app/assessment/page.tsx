@@ -8,7 +8,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Switch } from "@/components/ui/switch"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Progress } from "@/components/ui/progress"
 import {
@@ -27,7 +26,6 @@ import {
   TrendingUp,
   Clock,
   Plus,
-  Monitor,
   Microscope,
   Pill,
   Clipboard,
@@ -52,12 +50,12 @@ export default function AssessmentPage() {
   const [formData, setFormData] = useState<VitalSigns>({
     Respiratory_Rate: 0,
     Oxygen_Saturation: 0,
-    O2_Scale: 1,
+    O2_Scale: -1, // -1 indicates not selected
     Systolic_BP: 0,
     Heart_Rate: 0,
     Temperature: 0,
-    Consciousness: 0,
-    On_Oxygen: 0,
+    Consciousness: -1, // -1 indicates not selected
+    On_Oxygen: -1, // -1 indicates not selected
   })
 
   const [result, setResult] = useState<PredictionResult | null>(null)
@@ -156,14 +154,40 @@ export default function AssessmentPage() {
     const fieldsForProgress = [
       formData.Respiratory_Rate,
       formData.Oxygen_Saturation,
-      formData.O2_Scale,
       formData.Systolic_BP,
       formData.Heart_Rate,
       formData.Temperature,
-      formData.Consciousness,
     ]
+
+    const consciousnessFieldFilled = formData.Consciousness >= 0
+    const o2ScaleFilled = formData.O2_Scale >= 0
+    const onOxygenFilled = formData.On_Oxygen >= 0
+
     const filledFields = fieldsForProgress.filter((value) => value > 0).length
-    return (filledFields / fieldsForProgress.length) * 100
+    const totalFields = fieldsForProgress.length + 3
+    const progressFields =
+      filledFields + (consciousnessFieldFilled ? 1 : 0) + (o2ScaleFilled ? 1 : 0) + (onOxygenFilled ? 1 : 0)
+
+    const baseProgress = 7
+    const remainingProgress = 100 - baseProgress
+    const calculatedProgress = (progressFields / totalFields) * remainingProgress
+
+    return baseProgress + calculatedProgress
+  }
+
+  const isFormComplete = () => {
+    const requiredFields = [
+      formData.Respiratory_Rate > 0,
+      formData.Oxygen_Saturation > 0,
+      formData.Systolic_BP > 0,
+      formData.Heart_Rate > 0,
+      formData.Temperature > 0,
+      formData.Consciousness >= 0,
+      formData.O2_Scale >= 0,
+      formData.On_Oxygen >= 0,
+    ]
+
+    return requiredFields.every((field) => field === true)
   }
 
   return (
@@ -221,11 +245,6 @@ export default function AssessmentPage() {
         <div className="absolute top-48 right-1/4 opacity-0 animate-float animation-delay-1700 fill-mode-forwards">
           <div className="p-2 bg-primary/5 rounded-full backdrop-blur-sm">
             <Pill className="h-5 w-5 text-primary/30" />
-          </div>
-        </div>
-        <div className="absolute bottom-80 left-1/3 opacity-0 animate-float-delayed animation-delay-1900 fill-mode-forwards">
-          <div className="p-3 bg-secondary/5 rounded-full backdrop-blur-sm">
-            <Monitor className="h-6 w-6 text-secondary/25" />
           </div>
         </div>
         <div className="absolute top-80 right-20 opacity-0 animate-float-slow animation-delay-2100 fill-mode-forwards">
@@ -341,26 +360,36 @@ export default function AssessmentPage() {
                         <Label htmlFor="o2-scale" className="text-sm font-medium">
                           O2 Scale Assessment
                         </Label>
-                        <Select onValueChange={(value) => handleInputChange("O2_Scale", Number(value))}>
+                        <Select
+                          onValueChange={(value) => handleInputChange("O2_Scale", Number(value))}
+                          value={formData.O2_Scale >= 0 ? formData.O2_Scale.toString() : ""}
+                        >
                           <SelectTrigger className="bg-input border-border focus:border-primary">
                             <SelectValue placeholder="Select O2 scale" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="1">Scale 1 - Minimal support</SelectItem>
-                            <SelectItem value="2">Scale 2 - Moderate support</SelectItem>
+                            <SelectItem value="1">Yes</SelectItem>
+                            <SelectItem value="2">No</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
 
-                      <div className="flex items-center space-x-3 pt-6">
-                        <Switch
-                          id="on-oxygen"
-                          checked={formData.On_Oxygen === 1}
-                          onCheckedChange={(checked) => handleInputChange("On_Oxygen", checked ? 1 : 0)}
-                        />
+                      <div className="space-y-3">
                         <Label htmlFor="on-oxygen" className="text-sm font-medium">
-                          Patient on supplemental oxygen
+                          Patient on Oxygen
                         </Label>
+                        <Select
+                          onValueChange={(value) => handleInputChange("On_Oxygen", Number(value))}
+                          value={formData.On_Oxygen >= 0 ? formData.On_Oxygen.toString() : ""}
+                        >
+                          <SelectTrigger className="bg-input border-border focus:border-primary">
+                            <SelectValue placeholder="Select oxygen status" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="1">Yes</SelectItem>
+                            <SelectItem value="0">No</SelectItem>
+                          </SelectContent>
+                        </Select>
                       </div>
                     </div>
                   </div>
@@ -445,7 +474,10 @@ export default function AssessmentPage() {
                         <Label htmlFor="consciousness" className="text-sm font-medium">
                           Consciousness Level (AVPU Scale)
                         </Label>
-                        <Select onValueChange={(value) => handleInputChange("Consciousness", Number(value))}>
+                        <Select
+                          onValueChange={(value) => handleInputChange("Consciousness", Number(value))}
+                          value={formData.Consciousness >= 0 ? formData.Consciousness.toString() : ""}
+                        >
                           <SelectTrigger className="bg-input border-border focus:border-primary">
                             <SelectValue placeholder="Select consciousness level" />
                           </SelectTrigger>
@@ -467,7 +499,7 @@ export default function AssessmentPage() {
                   <Button
                     type="submit"
                     className="w-full bg-primary hover:bg-primary/90 text-lg py-6 group"
-                    disabled={loading || getFormProgress() < 100}
+                    disabled={loading || !isFormComplete()}
                   >
                     {loading ? (
                       <>
