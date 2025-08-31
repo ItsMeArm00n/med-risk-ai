@@ -8,6 +8,9 @@ import {
   Heart,
   Activity,
   Shield,
+  ShieldCheck,
+  Code,
+  Stethoscope,
   Zap,
   Users,
   TrendingUp,
@@ -287,7 +290,7 @@ export default function HomePage() {
             <Card className="border-border bg-card hover:bg-card/80 transition-all duration-300 group hover:scale-105 hover:shadow-xl opacity-0 animate-fade-in-up animation-delay-600 fill-mode-forwards">
               <CardHeader>
                 <div className="p-3 bg-primary/10 rounded-lg w-fit group-hover:bg-primary/20 transition-all duration-300 group-hover:scale-110">
-                  <Shield className="h-6 w-6 text-primary group-hover:animate-pulse" />
+                  <Stethoscope className="h-6 w-6 text-primary group-hover:animate-pulse" />
                 </div>
                 <CardTitle className="font-manrope">Clinical Accuracy</CardTitle>
                 <CardDescription>
@@ -311,7 +314,7 @@ export default function HomePage() {
             <Card className="border-border bg-card hover:bg-card/80 transition-all duration-300 group hover:scale-105 hover:shadow-xl opacity-0 animate-fade-in-up animation-delay-1000 fill-mode-forwards">
               <CardHeader>
                 <div className="p-3 bg-primary/10 rounded-lg w-fit group-hover:bg-primary/20 transition-all duration-300 group-hover:scale-110">
-                  <TrendingUp className="h-6 w-6 text-primary group-hover:animate-pulse" />
+                  <ShieldCheck className="h-6 w-6 text-primary group-hover:animate-pulse" />
                 </div>
                 <CardTitle className="font-manrope">Privacy-Friendly</CardTitle>
                 <CardDescription>
@@ -323,7 +326,7 @@ export default function HomePage() {
             <Card className="border-border bg-card hover:bg-card/80 transition-all duration-300 group hover:scale-105 hover:shadow-xl opacity-0 animate-fade-in-up animation-delay-1200 fill-mode-forwards">
               <CardHeader>
                 <div className="p-3 bg-primary/10 rounded-lg w-fit group-hover:bg-primary/20 transition-all duration-300 group-hover:scale-110">
-                  <Activity className="h-6 w-6 text-primary group-hover:animate-pulse" />
+                  <Code className="h-6 w-6 text-primary group-hover:animate-pulse" />
                 </div>
                 <CardTitle className="font-manrope">Open Source</CardTitle>
                 <CardDescription>
