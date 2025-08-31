@@ -4,8 +4,7 @@ An open-source web application that predicts patient health risk levels (Normal,
 
 ## Live Web App
 
-Access the deployed app - [MedRisk AI](https://med-risk-ai.vercel.app) 
-Hosted Via vercel*
+Access the website (Hosted on vercel) - [MedRisk AI](https://med-risk-ai.vercel.app) 
 
 ## API & Source Code
 
