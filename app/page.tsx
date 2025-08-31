@@ -143,8 +143,9 @@ export default function HomePage() {
                   </span>
                 </h1>
                 <p className="text-xl text-muted-foreground text-pretty max-w-2xl opacity-0 animate-fade-in-up animation-delay-1200 fill-mode-forwards">
-                  Leverage cutting-edge machine learning to analyze patient vital signs and predict health risks with
-                  unprecedented accuracy. Built for healthcare professionals who demand precision.
+                  Harness the power of machine learning to explore how patient vital signs relate to health risk levels. 
+                  This demo offers an interactive, data-driven experience designed for students, developers, and curious 
+                  minds interested in clinical modeling and AI in healthcare.
                 </p>
               </div>
 
@@ -164,15 +165,15 @@ export default function HomePage() {
               <div className="grid grid-cols-3 gap-8 pt-8 border-t border-border opacity-0 animate-fade-in-up animation-delay-1600 fill-mode-forwards">
                 <div className="text-center group cursor-pointer">
                   <div className="text-2xl font-bold text-primary group-hover:scale-110 transition-transform duration-300">
-                    99.2%
+                    95.5%
                   </div>
                   <div className="text-sm text-muted-foreground">Accuracy Rate</div>
                 </div>
                 <div className="text-center group cursor-pointer">
                   <div className="text-2xl font-bold text-primary group-hover:scale-110 transition-transform duration-300">
-                    10K+
+                    On Github
                   </div>
-                  <div className="text-sm text-muted-foreground">Assessments</div>
+                  <div className="text-sm text-muted-foreground">Open Source</div>
                 </div>
                 <div className="text-center group cursor-pointer">
                   <div className="text-2xl font-bold text-primary group-hover:scale-110 transition-transform duration-300">
@@ -254,8 +255,7 @@ export default function HomePage() {
           <div className="text-center mb-16 opacity-0 animate-fade-in-up fill-mode-forwards">
             <h2 className="text-4xl font-bold font-manrope mb-4">Why Choose MedRisk AI?</h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto text-pretty">
-              Our advanced AI platform combines clinical expertise with machine learning to deliver accurate, real-time
-              health risk assessments.
+              MedRisk AI blends machine learning with clinical data modeling to deliver fast, data-driven health risk assessments. Built for researchers, developers, and learners exploring AI in healthcare.
             </p>
           </div>
 
@@ -267,8 +267,7 @@ export default function HomePage() {
                 </div>
                 <CardTitle className="font-manrope">AI-Powered Analysis</CardTitle>
                 <CardDescription>
-                  Advanced machine learning algorithms trained on extensive clinical datasets for precise risk
-                  prediction.
+                  Machine learning algorithms trained on curated clinical datasets for simulated risk prediction.
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -280,7 +279,7 @@ export default function HomePage() {
                 </div>
                 <CardTitle className="font-manrope">Real-Time Results</CardTitle>
                 <CardDescription>
-                  Get instant risk assessments within seconds of entering patient vital signs and clinical data.
+                  Get instant assessments within seconds of entering patient vitals and data.
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -292,7 +291,7 @@ export default function HomePage() {
                 </div>
                 <CardTitle className="font-manrope">Clinical Accuracy</CardTitle>
                 <CardDescription>
-                  Validated against clinical standards with 99.2% accuracy rate in predicting patient risk levels.
+                  chieves up to 95.55% accuracy in internal tests using benchmark datasets.
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -304,7 +303,7 @@ export default function HomePage() {
                 </div>
                 <CardTitle className="font-manrope">Multi-User Support</CardTitle>
                 <CardDescription>
-                  Designed for healthcare teams with role-based access and collaborative assessment features.
+                  Role-based access and collaborative features for teams and classrooms.
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -314,9 +313,9 @@ export default function HomePage() {
                 <div className="p-3 bg-primary/10 rounded-lg w-fit group-hover:bg-primary/20 transition-all duration-300 group-hover:scale-110">
                   <TrendingUp className="h-6 w-6 text-primary group-hover:animate-pulse" />
                 </div>
-                <CardTitle className="font-manrope">Trend Analysis</CardTitle>
+                <CardTitle className="font-manrope">Privacy-Friendly</CardTitle>
                 <CardDescription>
-                  Track patient risk trends over time with comprehensive analytics and reporting capabilities.
+                  No patient data stored. All assessments run locally or in secure environments.
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -326,9 +325,9 @@ export default function HomePage() {
                 <div className="p-3 bg-primary/10 rounded-lg w-fit group-hover:bg-primary/20 transition-all duration-300 group-hover:scale-110">
                   <Activity className="h-6 w-6 text-primary group-hover:animate-pulse" />
                 </div>
-                <CardTitle className="font-manrope">Vital Signs Integration</CardTitle>
+                <CardTitle className="font-manrope">Open Source</CardTitle>
                 <CardDescription>
-                  Seamlessly integrate with existing monitoring systems for automated data collection and analysis.
+                  Fully transparent codebase available for review, customization, and learning.
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -341,11 +340,10 @@ export default function HomePage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="bg-gradient-to-r from-primary/10 via-secondary/5 to-primary/10 rounded-3xl p-12 border border-border hover:border-primary/30 transition-all duration-500 opacity-0 animate-fade-in-up fill-mode-forwards group">
             <h2 className="text-4xl font-bold font-manrope mb-4 group-hover:text-primary transition-colors duration-300">
-              Ready to Transform Patient Care?
+              Reimagine Health Risk Assessment
             </h2>
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto text-pretty">
-              Join thousands of healthcare professionals using MedRisk AI to make faster, more accurate clinical
-              decisions.
+              MedRisk AI brings speed, transparency, and innovation to predictive modeling.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/assessment">
@@ -475,7 +473,7 @@ export default function HomePage() {
               consult qualified healthcare professionals for medical decisions.
             </p>
             <p className="text-xs text-muted-foreground mt-2">
-              © 2024 MedRisk AI. Built with precision for healthcare innovation.
+              © 2025 MedRisk AI. Advancing healthcare insights through open-source machine learning.
             </p>
           </div>
         </div>
