@@ -41,7 +41,7 @@ const demoVitals = [
     "Heart Rate": 151,
     "Oxygen Saturation": 92,
     "On Oxygen": "Yes",
-    Assessment: "High Risk — Elevated heart rate and low oxygen saturation suggest acute stress.",
+    Assessment: "High Risk — Fast heart rate and low oxygen hint at acute stress.",
     "Risk Level": "High",
   },
   {
