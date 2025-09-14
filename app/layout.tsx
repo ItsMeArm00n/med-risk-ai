@@ -31,6 +31,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta name="google-site-verification" content="4d0ead40a062a787" />
+      </head>
       <body className={`font-sans ${geistSans.variable} ${manrope.variable} antialiased`}>
         <Suspense fallback={null}>{children}</Suspense>
         <Analytics />
