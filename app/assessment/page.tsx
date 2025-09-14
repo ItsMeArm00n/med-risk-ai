@@ -368,8 +368,8 @@ export default function AssessmentPage() {
                             <SelectValue placeholder="Select O2 scale" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="1">Yes</SelectItem>
-                            <SelectItem value="2">No</SelectItem>
+                            <SelectItem value="1">Scale 1</SelectItem>
+                            <SelectItem value="2">Scale 2</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
