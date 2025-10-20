@@ -30,6 +30,7 @@ import {
   Pill,
   Clipboard,
 } from "lucide-react"
+import { Modal } from "@/components/ui/Modal"
 
 interface VitalSigns {
   Respiratory_Rate: number
@@ -62,6 +63,8 @@ export default function AssessmentPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [currentStep, setCurrentStep] = useState(1)
+  const [modalOpen, setModalOpen] = useState(false)
+  const [modalMessage, setModalMessage] = useState("")
 
   const consciousnessOptions = [
     { value: 0, label: "Alert (A)", description: "Patient is fully conscious and responsive" },
@@ -79,27 +82,41 @@ export default function AssessmentPage() {
     e.preventDefault()
     setLoading(true)
     setError(null)
+    setModalOpen(false)
+    setModalMessage("")
+
+    // Create timeout promise
+    const timeoutPromise = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error("timeout")), 10000)
+    )
+
+    // Create API call promise
+    const apiPromise = fetch("https://ItsMeArm00n-Health-Risk-Predictor.hf.space/predict", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    }).then(async (response) => {
+      if (!response.ok) throw new Error("invalid")
+      const data = await response.json()
+      if (!data || !data.risk_level) throw new Error("invalid")
+      return data
+    })
 
     try {
-      console.log("[v0] Sending assessment data:", formData)
-      const response = await fetch("https://ItsMeArm00n-Health-Risk-Predictor.hf.space/predict", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      })
-
-      if (!response.ok) {
-        throw new Error(`API Error: ${response.status} - ${response.statusText}`)
-      }
-
-      const data: PredictionResult = await response.json()
+      const data = await Promise.race([apiPromise, timeoutPromise])
       console.log("[v0] Received prediction result:", data)
-      setResult(data)
-    } catch (err) {
+      setResult(data as PredictionResult)
+    } catch (err: any) {
       console.log("[v0] Error occurred:", err)
-      setError(err instanceof Error ? err.message : "An error occurred while processing the assessment")
+      if (err.message === "timeout") {
+        setModalMessage("The API is taking too long. It may be asleep. Please restart it using the link in the footer.")
+      } else {
+        setModalMessage("The API is taking too long. It may be asleep. Please restart it using the link in the footer.")
+      }
+      setModalOpen(true)
+      setError("The API is taking too long. It may be asleep. Please restart it using the link in the footer.")
     } finally {
       setLoading(false)
     }
@@ -620,13 +637,31 @@ export default function AssessmentPage() {
       </div>
 
       {/* Footer */}
-      <footer className="bg-card/50 border-t border-border py-8 mt-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-sm text-muted-foreground mb-2">
-            <strong>Medical Disclaimer:</strong> This AI assessment tool is for clinical decision support only. Always
-            use professional medical judgment and follow institutional protocols.
-          </p>
-          <p className="text-xs text-muted-foreground">MedRisk AI v2.0 - Built for healthcare excellence</p>
+      <footer className="bg-card/50 border-t border-border py-12 mt-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="space-y-4 col-span-2">
+              <p className="text-sm text-muted-foreground">
+                Medical Disclaimer: This tool is for educational and research purposes only. Always consult qualified healthcare professionals for medical decisions.
+              </p>
+              <p className="text-xs text-muted-foreground">
+                © 2025 MedRisk AI. Advancing healthcare insights through open-source machine learning.
+              </p>
+            </div>
+
+            <div className="flex flex-col md:items-end justify-center">
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-muted-foreground">Built by Armaan Kumar</span>
+                <Link
+                  href="https://armaan-ai.vercel.app"
+                  target="_blank"
+                  className="text-sm px-4 py-2 bg-primary/10 hover:bg-primary/20 text-primary rounded-md transition-colors"
+                >
+                  Portfolio
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
       </footer>
     </div>

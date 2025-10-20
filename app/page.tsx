@@ -365,9 +365,9 @@ export default function HomePage() {
       {/* Footer */}
       <footer className="bg-card/50 border-t border-border py-12 animate-fade-in-up">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="space-y-4">
-              <div className="flex items-center space-x-2 group cursor-pointer">
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="space-y-4 col-span-1">
+              <div className="flex items-center space-x-2 group">
                 <div className="p-2 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors duration-300">
                   <Heart className="h-5 w-5 text-primary group-hover:animate-pulse" />
                 </div>
@@ -391,92 +391,78 @@ export default function HomePage() {
                 </li>
                 <li>
                   <Link
-                    href="#"
+                    href="/"
                     className="hover:text-foreground transition-colors duration-200 hover:translate-x-1 inline-block"
                   >
-                    {"<Placeholder>"}
+                    Home
                   </Link>
                 </li>
                 <li>
                   <Link
-                    href="#"
+                    href="#why-choose"
                     className="hover:text-foreground transition-colors duration-200 hover:translate-x-1 inline-block"
                   >
-                    {"<Placeholder>"}
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="font-semibold mb-4">{"<Placeholder>"}</h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>
-                  <Link
-                    href="#"
-                    className="hover:text-foreground transition-colors duration-200 hover:translate-x-1 inline-block"
-                  >
-                    {"<Placeholder>"}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="#"
-                    className="hover:text-foreground transition-colors duration-200 hover:translate-x-1 inline-block"
-                  >
-                    {"<Placeholder>"}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="#"
-                    className="hover:text-foreground transition-colors duration-200 hover:translate-x-1 inline-block"
-                  >
-                    {"<Placeholder>"}
+                    Why MedRisk AI
                   </Link>
                 </li>
               </ul>
             </div>
 
             <div>
-              <h3 className="font-semibold mb-4">Legal</h3>
+              <h3 className="font-semibold mb-4">Resources</h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
                   <Link
-                    href="#"
+                    href="https://armaan-ai.vercel.app"
+                    target="_blank"
                     className="hover:text-foreground transition-colors duration-200 hover:translate-x-1 inline-block"
                   >
-                    {"<Placeholder>"}
+                    Developer Portfolio
                   </Link>
                 </li>
                 <li>
                   <Link
-                    href="#"
+                    href="https://github.com/ItsMeArm00n/med-risk-ai"
+                    target="_blank"
                     className="hover:text-foreground transition-colors duration-200 hover:translate-x-1 inline-block"
                   >
-                    {"<Placeholder>"}
+                    Website Source (GitHub)
                   </Link>
                 </li>
                 <li>
                   <Link
-                    href="#"
+                    href="https://huggingface.co/spaces/ItsMeArm00n/Health-Risk-Predictor/tree/main"
+                    target="_blank"
                     className="hover:text-foreground transition-colors duration-200 hover:translate-x-1 inline-block"
                   >
-                    {"<Placeholder>"}
+                    API Source (Hugging Face)
                   </Link>
                 </li>
               </ul>
             </div>
           </div>
 
-          <div className="border-t border-border mt-12 pt-8 text-center">
-            <p className="text-sm text-muted-foreground">
-              <strong>Medical Disclaimer:</strong> This tool is for educational and research purposes only. Always
-              consult qualified healthcare professionals for medical decisions.
-            </p>
-            <p className="text-xs text-muted-foreground mt-2">
-              © 2025 MedRisk AI. Advancing healthcare insights through open-source machine learning.
-            </p>
+          <div className="border-t border-border mt-12 pt-8">
+            <div className="flex flex-col md:flex-row md:justify-between items-center gap-4">
+              <div className="text-left">
+                <p className="text-sm text-muted-foreground">
+                  Medical Disclaimer: This tool is for educational and research purposes only. Always consult qualified healthcare professionals for medical decisions.
+                </p>
+                <p className="text-xs text-muted-foreground mt-2">
+                  © 2025 MedRisk AI. Advancing healthcare insights through open-source machine learning.
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-muted-foreground">Built by Armaan Kumar</span>
+                <Link
+                  href="https://armaan-ai.vercel.app"
+                  target="_blank"
+                  className="text-sm px-4 py-2 bg-primary/10 hover:bg-primary/20 text-primary rounded-md transition-colors"
+                >
+                  Portfolio
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </footer>
