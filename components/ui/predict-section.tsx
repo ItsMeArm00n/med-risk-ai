@@ -15,14 +15,20 @@ export default function PredictSection() {
       setTimeout(() => reject(new Error("timeout")), 10000)
     )
 
-    // API call promise
-    const apiPromise = fetch("https://ItsMeArm00n-Health-Risk-Predictor.hf.space/predict")
+    // Call Next.js API route
+    const apiPromise = fetch("/api/predict", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({}),
+    })
       .then(async (res) => {
-        // Check for valid response (customize this check)
-        if (!res.ok) throw new Error("invalid")
         const data = await res.json()
-        // Replace this with your required output check
-        if (!data || !data.requiredField) throw new Error("invalid")
+        if (!res.ok) {
+          throw new Error(data.error || `HTTP ${res.status}`)
+        }
+        if (!data || !data.risk_level) throw new Error("No risk_level in response")
         return data
       })
 
@@ -31,9 +37,9 @@ export default function PredictSection() {
       // Success: do nothing
     } catch (err: any) {
       if (err.message === "timeout") {
-        setModalMessage("The API is taking too long. It may be asleep. Please restart it using the link in the footer.")
+        setModalMessage("Prediction is taking too long. Make sure Python is installed.")
       } else {
-        setModalMessage("The API did not return the required output. Please check the API or try again later.")
+        setModalMessage("Failed to get prediction. Make sure Python is installed: pip install -r requirements.txt")
       }
       setModalOpen(true)
     }

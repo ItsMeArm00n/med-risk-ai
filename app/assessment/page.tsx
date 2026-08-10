@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -65,6 +65,16 @@ export default function AssessmentPage() {
   const [currentStep, setCurrentStep] = useState(1)
   const [modalOpen, setModalOpen] = useState(false)
   const [modalMessage, setModalMessage] = useState("")
+  const resultsRef = useRef<HTMLDivElement>(null)
+
+  // Scroll to results when prediction is made
+  useEffect(() => {
+    if (result && resultsRef.current) {
+      // Scroll with an offset to show more content above
+      const scrollPosition = resultsRef.current.getBoundingClientRect().top + window.scrollY - 120
+      window.scrollTo({ top: scrollPosition, behavior: "smooth" })
+    }
+  }, [result])
 
   const consciousnessOptions = [
     { value: 0, label: "Alert (A)", description: "Patient is fully conscious and responsive" },
@@ -76,6 +86,19 @@ export default function AssessmentPage() {
 
   const handleInputChange = (field: keyof VitalSigns, value: number) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
+  }
+
+  const fillDemoData = () => {
+    setFormData({
+      Respiratory_Rate: 16,
+      Oxygen_Saturation: 98,
+      O2_Scale: 1,
+      Systolic_BP: 120,
+      Heart_Rate: 72,
+      Temperature: 37,
+      Consciousness: 0, // Alert
+      On_Oxygen: 1, // Yes
+    })
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -90,17 +113,19 @@ export default function AssessmentPage() {
       setTimeout(() => reject(new Error("timeout")), 10000)
     )
 
-    // Create API call promise
-    const apiPromise = fetch("https://ItsMeArm00n-Health-Risk-Predictor.hf.space/predict", {
+    // Create API call promise to Next.js route
+    const apiPromise = fetch("/api/predict", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(formData),
     }).then(async (response) => {
-      if (!response.ok) throw new Error("invalid")
       const data = await response.json()
-      if (!data || !data.risk_level) throw new Error("invalid")
+      if (!response.ok) {
+        throw new Error(data.error || `HTTP ${response.status}`)
+      }
+      if (!data || !data.risk_level) throw new Error("No risk_level in response")
       return data
     })
 
@@ -111,12 +136,12 @@ export default function AssessmentPage() {
     } catch (err: any) {
       console.log("[v0] Error occurred:", err)
       if (err.message === "timeout") {
-        setModalMessage("The API is taking too long. It may be asleep. Please restart it using the link in the footer.")
+        setModalMessage("Prediction is taking too long. Make sure Python is installed and the Health_risk_predictor_model.pkl file exists.")
       } else {
-        setModalMessage("The API is taking too long. It may be asleep. Please restart it using the link in the footer.")
+        setModalMessage(`Error: ${err.message}`)
       }
       setModalOpen(true)
-      setError("The API is taking too long. It may be asleep. Please restart it using the link in the footer.")
+      setError(`Failed to get prediction: ${err.message}`)
     } finally {
       setLoading(false)
     }
@@ -530,6 +555,16 @@ export default function AssessmentPage() {
                       </>
                     )}
                   </Button>
+
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full text-lg py-6"
+                    onClick={fillDemoData}
+                  >
+                    <Plus className="mr-2 h-5 w-5" />
+                    Fill Demo Data
+                  </Button>
                 </form>
               </CardContent>
             </Card>
@@ -597,7 +632,7 @@ export default function AssessmentPage() {
             </Card>
 
             {result && (
-              <Card className="shadow-xl border-border bg-card opacity-0 animate-fade-in-right animation-delay-1000 fill-mode-forwards">
+              <Card className="shadow-xl border-border bg-card opacity-0 animate-fade-in-right animation-delay-1000 fill-mode-forwards" ref={resultsRef}>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3">
                     <div className="p-2 bg-primary/10 rounded-lg">
@@ -636,20 +671,103 @@ export default function AssessmentPage() {
         </div>
       </div>
 
+      {/* Why Choose Section with CTA */}
+      <section className="py-16 bg-gradient-to-b from-background to-primary/5">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl font-bold font-manrope mb-4">Learn More About MedRisk AI</h2>
+          <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+            Discover why MedRisk AI is transforming health risk assessment with advanced AI technology.
+          </p>
+          <Link href="/#why-choose">
+            <Button size="lg" variant="outline" className="hover:bg-primary/10">
+              Why Choose MedRisk AI?
+              <ArrowLeft className="ml-2 h-5 w-5 rotate-180" />
+            </Button>
+          </Link>
+        </div>
+      </section>
+
       {/* Footer */}
-      <footer className="bg-card/50 border-t border-border py-12 mt-16">
+      <footer className="bg-card/50 border-t border-border py-12 animate-fade-in-up">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="space-y-4 col-span-2">
+            <div className="space-y-4 col-span-1">
+              <div className="flex items-center space-x-2 group">
+                <div className="p-2 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors duration-300">
+                  <Heart className="h-5 w-5 text-primary group-hover:animate-pulse" />
+                </div>
+                <span className="text-lg font-bold font-manrope">MedRisk AI</span>
+              </div>
               <p className="text-sm text-muted-foreground">
-                Medical Disclaimer: This tool is for educational and research purposes only. Always consult qualified healthcare professionals for medical decisions.
-              </p>
-              <p className="text-xs text-muted-foreground">
-                © 2025 MedRisk AI. Advancing healthcare insights through open-source machine learning.
+                Advanced AI-powered health risk assessment platform for healthcare professionals.
               </p>
             </div>
 
-            <div className="flex flex-col md:items-end justify-center">
+            <div>
+              <h3 className="font-semibold mb-4">Platform</h3>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li>
+                  <Link
+                    href="/assessment"
+                    className="hover:text-foreground transition-colors duration-200 hover:translate-x-1 inline-block"
+                  >
+                    Risk Assessment
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/"
+                    className="hover:text-foreground transition-colors duration-200 hover:translate-x-1 inline-block"
+                  >
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/#why-choose"
+                    className="hover:text-foreground transition-colors duration-200 hover:translate-x-1 inline-block"
+                  >
+                    Why MedRisk AI
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="font-semibold mb-4">Resources</h3>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li>
+                  <Link
+                    href="https://armaan-ai.vercel.app"
+                    target="_blank"
+                    className="hover:text-foreground transition-colors duration-200 hover:translate-x-1 inline-block"
+                  >
+                    Developer Portfolio
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="https://github.com/ItsMeArm00n/med-risk-ai"
+                    target="_blank"
+                    className="hover:text-foreground transition-colors duration-200 hover:translate-x-1 inline-block"
+                  >
+                    Website Source (GitHub)
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="border-t border-border mt-12 pt-8">
+            <div className="flex flex-col md:flex-row md:justify-between items-center gap-4">
+              <div className="text-left">
+                <p className="text-sm text-muted-foreground">
+                  Medical Disclaimer: This tool is for educational and research purposes only. Always consult qualified healthcare professionals for medical decisions.
+                </p>
+                <p className="text-xs text-muted-foreground mt-2">
+                  © 2025 MedRisk AI. Advancing healthcare insights through open-source machine learning.
+                </p>
+              </div>
               <div className="flex items-center gap-2">
                 <span className="text-sm text-muted-foreground">Built by Armaan Kumar</span>
                 <Link

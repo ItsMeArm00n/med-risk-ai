@@ -252,7 +252,7 @@ export default function HomePage() {
       </section>
 
       {/* Features Section */}
-      <section className="py-24 bg-card/30">
+      <section id="why-choose" className="py-24 bg-card/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 opacity-0 animate-fade-in-up fill-mode-forwards">
             <h2 className="text-4xl font-bold font-manrope mb-4">Why Choose MedRisk AI?</h2>
