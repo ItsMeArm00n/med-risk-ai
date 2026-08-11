@@ -1,4 +1,12 @@
+# Only what's needed for inference (loading the pickled model + predicting).
+# IMPORTANT: use xgboost-cpu, not xgboost. Plain `xgboost` pulls in
+# nvidia-nccl-cu13 (~240MB of unused GPU libs) which pushes the Vercel
+# Python function bundle over the 500MB limit. xgboost-cpu is the same
+# package/API for CPU inference, without the GPU dependency.
+# If your model does NOT use XGBoost (e.g. it's a plain sklearn
+# RandomForestClassifier/GradientBoostingClassifier), delete the
+# xgboost-cpu line entirely -- you don't need it and it's ~24MB you can save.
 scikit-learn>=1.0.0
 numpy>=1.20.0
 joblib>=1.0.0
-xgboost>=1.5.0
+xgboost-cpu>=2.0.0

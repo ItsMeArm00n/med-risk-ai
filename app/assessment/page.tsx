@@ -31,6 +31,7 @@ import {
   Clipboard,
 } from "lucide-react"
 import { Modal } from "@/components/ui/Modal"
+import { usePyodidePredictor } from "@/hooks/use-pyodide-predictor"
 
 interface VitalSigns {
   Respiratory_Rate: number
@@ -48,6 +49,8 @@ interface PredictionResult {
 }
 
 export default function AssessmentPage() {
+  const { predict, isReady, error: predictorError } = usePyodidePredictor()
+
   const [formData, setFormData] = useState<VitalSigns>({
     Respiratory_Rate: 0,
     Oxygen_Saturation: 0,
@@ -108,38 +111,28 @@ export default function AssessmentPage() {
     setModalOpen(false)
     setModalMessage("")
 
-    // Create timeout promise
-    const timeoutPromise = new Promise((_, reject) =>
-      setTimeout(() => reject(new Error("timeout")), 10000)
-    )
-
-    // Create API call promise to Next.js route
-    const apiPromise = fetch("/api/predict", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    }).then(async (response) => {
-      const data = await response.json()
-      if (!response.ok) {
-        throw new Error(data.error || `HTTP ${response.status}`)
-      }
-      if (!data || !data.risk_level) throw new Error("No risk_level in response")
-      return data
-    })
+    if (!isReady) {
+      setModalMessage("Loading prediction model... Please wait a moment and try again.")
+      setModalOpen(true)
+      setError("Model still loading")
+      setLoading(false)
+      return
+    }
 
     try {
-      const data = await Promise.race([apiPromise, timeoutPromise])
-      console.log("[v0] Received prediction result:", data)
-      setResult(data as PredictionResult)
-    } catch (err: any) {
-      console.log("[v0] Error occurred:", err)
-      if (err.message === "timeout") {
-        setModalMessage("Prediction is taking too long. Make sure Python is installed and the Health_risk_predictor_model.pkl file exists.")
+      const result = await predict(formData)
+      
+      if (result.error) {
+        setModalMessage(`Prediction error: ${result.error}`)
+        setModalOpen(true)
+        setError(`Failed to get prediction: ${result.error}`)
       } else {
-        setModalMessage(`Error: ${err.message}`)
+        console.log("[Assessment] Received prediction result:", result)
+        setResult(result as PredictionResult)
       }
+    } catch (err: any) {
+      console.log("[Assessment] Error occurred:", err)
+      setModalMessage(`Error: ${err.message}`)
       setModalOpen(true)
       setError(`Failed to get prediction: ${err.message}`)
     } finally {
@@ -349,6 +342,21 @@ export default function AssessmentPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
+                {!isReady && (
+                  <Alert variant="default" className="mb-6 bg-blue-500/10 border-blue-500/20">
+                    <Loader2 className="h-4 w-4 animate-spin text-blue-400" />
+                    <AlertDescription className="text-blue-400">
+                      Loading AI prediction model... This may take a moment on first load.
+                    </AlertDescription>
+                  </Alert>
+                )}
+
+                {predictorError && (
+                  <Alert variant="destructive" className="mb-6">
+                    <XCircle className="h-4 w-4" />
+                    <AlertDescription>Model loading error: {predictorError}</AlertDescription>
+                  </Alert>
+                )}
                 <form onSubmit={handleSubmit} className="space-y-8">
                   {/* Respiratory Section */}
                   <div className="space-y-6">
@@ -541,9 +549,14 @@ export default function AssessmentPage() {
                   <Button
                     type="submit"
                     className="w-full bg-primary hover:bg-primary/90 text-lg py-6 group"
-                    disabled={loading || !isFormComplete()}
+                    disabled={loading || !isFormComplete() || !isReady}
                   >
-                    {loading ? (
+                    {!isReady ? (
+                      <>
+                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                        Loading Model...
+                      </>
+                    ) : loading ? (
                       <>
                         <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                         Analyzing Patient Data...
