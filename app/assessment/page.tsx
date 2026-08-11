@@ -31,7 +31,7 @@ import {
   Clipboard,
 } from "lucide-react"
 import { Modal } from "@/components/ui/Modal"
-import { usePyodidePredictor } from "@/hooks/use-pyodide-predictor"
+import { usePredictor } from "@/hooks/use-predictor"
 
 interface VitalSigns {
   Respiratory_Rate: number
@@ -49,7 +49,7 @@ interface PredictionResult {
 }
 
 export default function AssessmentPage() {
-  const { predict, isReady, error: predictorError } = usePyodidePredictor()
+  const { predict, isLoading, error: predictorError } = usePredictor()
 
   const [formData, setFormData] = useState<VitalSigns>({
     Respiratory_Rate: 0,
@@ -63,7 +63,6 @@ export default function AssessmentPage() {
   })
 
   const [result, setResult] = useState<PredictionResult | null>(null)
-  const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [currentStep, setCurrentStep] = useState(1)
   const [modalOpen, setModalOpen] = useState(false)
@@ -106,18 +105,9 @@ export default function AssessmentPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setLoading(true)
     setError(null)
     setModalOpen(false)
     setModalMessage("")
-
-    if (!isReady) {
-      setModalMessage("Loading prediction model... Please wait a moment and try again.")
-      setModalOpen(true)
-      setError("Model still loading")
-      setLoading(false)
-      return
-    }
 
     try {
       const result = await predict(formData)
@@ -135,8 +125,6 @@ export default function AssessmentPage() {
       setModalMessage(`Error: ${err.message}`)
       setModalOpen(true)
       setError(`Failed to get prediction: ${err.message}`)
-    } finally {
-      setLoading(false)
     }
   }
 
@@ -342,19 +330,10 @@ export default function AssessmentPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                {!isReady && (
-                  <Alert variant="default" className="mb-6 bg-blue-500/10 border-blue-500/20">
-                    <Loader2 className="h-4 w-4 animate-spin text-blue-400" />
-                    <AlertDescription className="text-blue-400">
-                      Loading AI prediction model... This may take a moment on first load.
-                    </AlertDescription>
-                  </Alert>
-                )}
-
                 {predictorError && (
                   <Alert variant="destructive" className="mb-6">
                     <XCircle className="h-4 w-4" />
-                    <AlertDescription>Model loading error: {predictorError}</AlertDescription>
+                    <AlertDescription>Prediction error: {predictorError}</AlertDescription>
                   </Alert>
                 )}
                 <form onSubmit={handleSubmit} className="space-y-8">
@@ -549,14 +528,9 @@ export default function AssessmentPage() {
                   <Button
                     type="submit"
                     className="w-full bg-primary hover:bg-primary/90 text-lg py-6 group"
-                    disabled={loading || !isFormComplete() || !isReady}
+                    disabled={isLoading || !isFormComplete()}
                   >
-                    {!isReady ? (
-                      <>
-                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                        Loading Model...
-                      </>
-                    ) : loading ? (
+                    {isLoading ? (
                       <>
                         <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                         Analyzing Patient Data...
