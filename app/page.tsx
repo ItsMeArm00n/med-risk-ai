@@ -431,11 +431,10 @@ export default function HomePage() {
                 </li>
                 <li>
                   <Link
-                    href="https://huggingface.co/spaces/ItsMeArm00n/Health-Risk-Predictor/tree/main"
-                    target="_blank"
+                    href="/disclaimer"
                     className="hover:text-foreground transition-colors duration-200 hover:translate-x-1 inline-block"
                   >
-                    API Source (Hugging Face)
+                    Disclaimer
                   </Link>
                 </li>
               </ul>
@@ -446,7 +445,13 @@ export default function HomePage() {
             <div className="flex flex-col md:flex-row md:justify-between items-center gap-4">
               <div className="text-left">
                 <p className="text-sm text-muted-foreground">
-                  Medical Disclaimer: This tool is for educational and research purposes only. Always consult qualified healthcare professionals for medical decisions.
+                  Medical Disclaimer: This tool is for educational and research purposes only. Always consult qualified healthcare professionals for medical decisions.{" "}
+                  <Link
+                    href="/disclaimer"
+                    className="text-primary hover:text-primary/80 underline underline-offset-4 transition-colors duration-200"
+                  >
+                    Read full disclaimer
+                  </Link>
                 </p>
                 <p className="text-xs text-muted-foreground mt-2">
                   © 2025 MedRisk AI. Advancing healthcare insights through open-source machine learning.
