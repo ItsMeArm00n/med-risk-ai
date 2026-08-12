@@ -1,7 +1,5 @@
 # Local Model Setup Guide
 
-Your application now runs predictions directly using your local model - no external API needed!
-
 ## Setup Instructions
 
 ### 1. Install Python Dependencies
@@ -22,7 +20,7 @@ npm run dev
 pnpm dev
 ```
 
-That's it! The Next.js server will handle everything. When you make a prediction, it will:
+When you make a prediction, it will:
 1. Send data to `/api/predict` (Next.js API route)
 2. The route spawns a Python process that loads your model
 3. Makes the prediction and returns the result
@@ -75,8 +73,5 @@ That's it! The Next.js server will handle everything. When you make a prediction
 - **"Model not found"** - Check that `Health_risk_predictor_model.pkl` exists in the project root
 - **Windows Python not found** - Try using `python -m pip install -r requirements.txt` or add Python to PATH
 
-## One Server Only!
-
-You now only need to run `npm run dev`. No separate Python server needed! The Next.js app handles everything internally.
 
 
